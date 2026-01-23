@@ -2,11 +2,26 @@
 
 namespace App\Controllers;
 
-use App\Models\Obce;
+use App\Controllers\BaseController;
 use App\Models\Okres;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use Psr\Log\LoggerInterface;
+use App\Models\Obce;
 
 class Main extends BaseController
 {
+    var $okres;
+   public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
+   {
+    
+        $dataOkresu = new Okres();
+        $this -> okres = $dataOkresu->where('kraj', 141)->findAll();
+
+    return parent::initController($request, $response, $logger);
+
+   }
+
 
 
     public function index()
@@ -41,4 +56,6 @@ class Main extends BaseController
         ];
         echo view("okres", $data);
     }
+}
+
 }
