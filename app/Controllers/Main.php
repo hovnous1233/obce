@@ -11,34 +11,46 @@ use App\Models\Obce;
 
 class Main extends BaseController
 {
-    var $okres;
-   public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
+    public $okres;
+    public $dataOkresu;
+    public $dataObce;
+ 
+    public $obce;
+    private $data;
+     //toto je uplne vsude kde pouizije metodu 
+ public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
    {
-    
-        $dataOkresu = new Okres();
-        $this -> okres = $dataOkresu->where('kraj', 141)->findAll();
+        $this -> okres = new Okres();
+        $dataOkresu = $this-> okres ->where('kraj', 141)->findAll();
 
+        $this-> obce = new Obce();
+        $this-> dataObce = $this-> obce->findAll();
+        $this-> data = [
+            "navbar" => $dataOkresu
+        ];
     return parent::initController($request, $response, $logger);
-
+//$this muzeme pouzit vsude v main
    }
 
 
 
     public function index()
     {
-        $dataOkresu = new Okres();
-        $okres = $dataOkresu->where('kraj', 141)->findAll();
 
-
-        $data = [
-               "okresyData"=> $okres,
+        $this->data += [
+               
               
                
         ];
-        echo view("main_page", $data);
+        echo view("main_page", $this->data);
     }
 
-    public function okres()
+  
+
+}
+
+
+ /* public function okres()
     {
 
         $dataOkresu = new Okres();
@@ -56,6 +68,4 @@ class Main extends BaseController
         ];
         echo view("okres", $data);
     }
-}
 
-}
