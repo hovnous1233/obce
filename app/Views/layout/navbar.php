@@ -1,17 +1,18 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-light">
+
   <div class="container-fluid">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <p></p>
-      </li>
+
         <?php
-
-        foreach ($okres as $item){
-            echo ("<li class='nav-item'>"
-                .anchor("Okres/" .$item->kod, $item->nazev, ['class' => 'nav-link'])."</li>");
-
-        } ?>
-       
+        foreach ($navbar as $row) {
+        ?>    
+          <li class="nav-item">
+              <a class="nav-link" href="<?=   base_url("okres/$row->kod")?>"><?= $row->nazev ?></a>
+          </li>
+        <?php
+      }
+      ?>
     </ul>
   </div>
+
 </nav>

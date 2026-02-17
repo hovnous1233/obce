@@ -6,10 +6,10 @@ use CodeIgniter\Model;
 
 class Adresnimisto extends Model
 {
-    protected $table            = 'adresnimistos';
+    protected $table            = 'adresni_misto';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [];

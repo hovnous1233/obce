@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Adresnimisto;
 use App\Models\Okres;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -32,40 +33,19 @@ class Main extends BaseController
 //$this muzeme pouzit vsude v main
    }
 
-
-
-    public function index()
+    public function okres($kodOkresu,$per_page)
     {
-
+        $adresniMisto = new Adresnimisto();
+        $obec = $adresniMisto->select("obec.nazev, Count(*) as pocet")->join("ulice", "ulice.kod=adresni_misto.ulice", "inner")->join("cast_obce", "cast_obce.kod=ulice.cast_obce", "inner")->join("obec", "obec.kod=cast_obce.obec", "inner")->where("obec.okres", $kodOkresu)->groupBy("obec.kod")
+        ->orderBy("pocet","desc")->paginate($per_page);
         $this->data += [
-               
-              
-               
+            "obec" => $obec,
+            "pager" => $adresniMisto -> pager
         ];
-        echo view("main_page", $this->data);
+        return view("okres", $this->data);
+ 
     }
-
-  
-
-}
+ }
 
 
- /* public function okres()
-    {
-
-        $dataOkresu = new Okres();
-        $okres = $dataOkresu->where('kraj', 141)->findAll();
-
-        $dataObce = new Obce();
-        $obce = $dataObce->findAll();
-
-
-        $data = [
-                "okresyData" => $okres,
-               "obce"=> $obce
-              
-               
-        ];
-        echo view("okres", $data);
-    }
 

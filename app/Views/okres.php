@@ -6,7 +6,12 @@
 <h1>Názvy lokací</h1>
 <?php $table = new \CodeIgniter\View\Table(); 
 
-$table->setHeading("Název obce"); 
+$table->setHeading("Pořadí","Název obce", "Počet adres"); 
+
+foreach ($obec as $key => $row){
+    $poradi = $key +1;
+    $table->addRow($poradi,$row->nazev,$row->pocet);
+}
 
 $template = array(
 'table_open'=> '<table class="table table-bordered">',
@@ -32,13 +37,9 @@ $template = array(
 $table->setTemplate($template);
 
 
-foreach ($obce as $row){
-    $table->addRow($row->nazev);
-}
-
 
 echo $table->generate();
-
+echo $pager->links();
 ?>
 
 
