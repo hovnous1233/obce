@@ -1,15 +1,26 @@
+<?php
+
+use App\Models\Okres;
+
+use function PHPUnit\Framework\any;
+?>
 <?=$this->extend("layout/template");?>
 
 
 <?=$this->section("content");?>
 
 <h1>Názvy lokací</h1>
+<?= anchor("okres/".$kod."/kolik-na-strance/10", "Stránkování po 10", ["class" =>"btn btn-dark me-3" ]) ?>
+<?= anchor("okres/".$kod."/kolik-na-strance/20", "Stránkování po 20", ["class" =>"btn btn-dark me-3" ]) ?>
+<?= anchor("okres/".$kod."/kolik-na-strance/50", "Stránkování po 50", ["class" =>"btn btn-dark me-3" ]) ?>
+<?= anchor("okres/".$kod."/kolik-na-strance/100", "Stránkování po 100", ["class" =>"btn btn-dark me-3" ]) ?>
+
 <?php $table = new \CodeIgniter\View\Table(); 
 
 $table->setHeading("Pořadí","Název obce", "Počet adres"); 
 
 foreach ($obec as $key => $row){
-    $poradi = $key +1;
+    $poradi = $key + (($page * $perPage + 1) - $perPage);
     $table->addRow($poradi,$row->nazev,$row->pocet);
 }
 

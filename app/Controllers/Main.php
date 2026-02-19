@@ -33,19 +33,41 @@ class Main extends BaseController
 //$this muzeme pouzit vsude v main
    }
 
-    public function okres($kodOkresu,$per_page)
+
+
+    public function index()
     {
+
+        $this->data += [
+               
+              
+               
+        ];
+        echo view("main_page", $this->data);
+    }
+
+
+    public function okres($kodOkresu,$perPage)
+    {
+
         $adresniMisto = new Adresnimisto();
         $obec = $adresniMisto->select("obec.nazev, Count(*) as pocet")->join("ulice", "ulice.kod=adresni_misto.ulice", "inner")->join("cast_obce", "cast_obce.kod=ulice.cast_obce", "inner")->join("obec", "obec.kod=cast_obce.obec", "inner")->where("obec.okres", $kodOkresu)->groupBy("obec.kod")
-        ->orderBy("pocet","desc")->paginate($per_page);
+        ->orderBy("pocet","desc")->paginate($perPage);
+        $pager = $adresniMisto->pager;
+ 
+        $page = $pager->getCurrentPage();
+
+
         $this->data += [
             "obec" => $obec,
-            "pager" => $adresniMisto -> pager
+            "pager" => $pager,
+            "perPage" => $perPage,
+            "page" => $page,
+            "kod" => $kodOkresu
         ];
-        return view("okres", $this->data);
+        echo view("okres", $this->data);
  
     }
- }
+  
 
-
-
+}
