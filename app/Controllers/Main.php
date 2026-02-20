@@ -37,14 +37,23 @@ class Main extends BaseController
 
     public function index()
     {
+        $adresniMisto = new Adresnimisto();
+        $obec = $adresniMisto->select("obec.nazev, Count(*) as pocet")->join("ulice", "ulice.kod=adresni_misto.ulice", "inner")->join("cast_obce", "cast_obce.kod=ulice.cast_obce", "inner")->join("obec", "obec.kod=cast_obce.obec", "inner")->groupBy("obec.kod")
+        ->orderBy("pocet","desc")->paginate(20);
+        $pager = $adresniMisto->pager;
+ 
+        $page = $pager->getCurrentPage();
 
         $this->data += [
-               
-              
-               
+            "kraj" => $obec,
+            "pager" => $pager,
+            "page" => $page
+
         ];
         echo view("main_page", $this->data);
+ 
     }
+    
 
 
     public function okres($kodOkresu,$perPage)
@@ -71,3 +80,5 @@ class Main extends BaseController
   
 
 }
+
+
